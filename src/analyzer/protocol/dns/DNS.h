@@ -219,7 +219,7 @@ public:
 
 class DNS_Interpreter {
 public:
-	explicit DNS_Interpreter(analyzer::Analyzer* analyzer);
+	explicit DNS_Interpreter(zeek::analyzer::Analyzer* analyzer);
 
 	void ParseMessage(const u_char* data, int len, int is_query);
 
@@ -311,7 +311,7 @@ protected:
 					zeek::String* question_name,
 					zeek::String* original_name);
 
-	analyzer::Analyzer* analyzer;
+	zeek::analyzer::Analyzer* analyzer;
 	bool first_message;
 };
 
@@ -360,7 +360,7 @@ public:
 					tcp::TCP_Endpoint* peer, bool gen_event) override;
 	void ExpireTimer(double t);
 
-	static analyzer::Analyzer* Instantiate(Connection* conn)
+	static zeek::analyzer::Analyzer* Instantiate(Connection* conn)
 		{ return new DNS_Analyzer(conn); }
 
 protected:
