@@ -2204,14 +2204,14 @@ zeek::Val* Manager::ValueToVal(const Stream* i, const Value* val, zeek::Type* re
 
 	case zeek::TYPE_ADDR:
 		{
-		IPAddr* addr = nullptr;
+		zeek::IPAddr* addr = nullptr;
 		switch ( val->val.addr_val.family ) {
 		case IPv4:
-			addr = new IPAddr(val->val.addr_val.in.in4);
+			addr = new zeek::IPAddr(val->val.addr_val.in.in4);
 			break;
 
 		case IPv6:
-			addr = new IPAddr(val->val.addr_val.in.in6);
+			addr = new zeek::IPAddr(val->val.addr_val.in.in6);
 			break;
 
 		default:
@@ -2225,14 +2225,14 @@ zeek::Val* Manager::ValueToVal(const Stream* i, const Value* val, zeek::Type* re
 
 	case zeek::TYPE_SUBNET:
 		{
-		IPAddr* addr = nullptr;
+		zeek::IPAddr* addr = nullptr;
 		switch ( val->val.subnet_val.prefix.family ) {
 		case IPv4:
-			addr = new IPAddr(val->val.subnet_val.prefix.in.in4);
+			addr = new zeek::IPAddr(val->val.subnet_val.prefix.in.in4);
 			break;
 
 		case IPv6:
-			addr = new IPAddr(val->val.subnet_val.prefix.in.in6);
+			addr = new zeek::IPAddr(val->val.subnet_val.prefix.in.in6);
 			break;
 
 		default:
