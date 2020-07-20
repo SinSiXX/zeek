@@ -1716,8 +1716,8 @@ DNS_Analyzer::DNS_Analyzer(Connection* conn)
 	else
 		{
 		ADD_ANALYZER_TIMER(&DNS_Analyzer::ExpireTimer,
-					network_time + dns_session_timeout, true,
-					TIMER_DNS_EXPIRE);
+		                   network_time + dns_session_timeout, true,
+		                   zeek::TIMER_DNS_EXPIRE);
 		}
 	}
 
@@ -1770,5 +1770,5 @@ void DNS_Analyzer::ExpireTimer(double t)
 		}
 	else
 		ADD_ANALYZER_TIMER(&DNS_Analyzer::ExpireTimer,
-				t + dns_session_timeout, true, TIMER_DNS_EXPIRE);
+		                   t + dns_session_timeout, true, zeek::TIMER_DNS_EXPIRE);
 	}

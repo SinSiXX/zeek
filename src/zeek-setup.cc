@@ -99,7 +99,8 @@ zeek::detail::RuleMatcher*& rule_matcher = zeek::detail::rule_matcher;
 zeek::detail::DNS_Mgr* zeek::detail::dns_mgr = nullptr;
 zeek::detail::DNS_Mgr*& dns_mgr = zeek::detail::dns_mgr;
 
-TimerMgr* timer_mgr;
+zeek::TimerMgr* zeek::timer_mgr = nullptr;
+zeek::TimerMgr*& timer_mgr = zeek::timer_mgr;
 
 logging::Manager* log_mgr = nullptr;
 threading::Manager* thread_mgr = nullptr;
@@ -230,7 +231,7 @@ void done_with_network()
 		mgr.Drain();
 		// Don't propagate this event to remote clients.
 		mgr.Dispatch(new Event(net_done,
-		                       {zeek::make_intrusive<zeek::TimeVal>(timer_mgr->Time())}),
+		                       {zeek::make_intrusive<zeek::TimeVal>(zeek::timer_mgr->Time())}),
 		             true);
 		}
 
@@ -240,7 +241,7 @@ void done_with_network()
 	terminating = true;
 
 	zeek::analyzer::analyzer_mgr->Done();
-	timer_mgr->Expire();
+	zeek::timer_mgr->Expire();
 	zeek::detail::dns_mgr->Flush();
 	mgr.Drain();
 	mgr.Drain();
@@ -282,7 +283,7 @@ void terminate_bro()
 	if ( zeek_done )
 		mgr.Enqueue(zeek_done, zeek::Args{});
 
-	timer_mgr->Expire();
+	zeek::timer_mgr->Expire();
 	mgr.Drain();
 
 	if ( profiling_logger )
@@ -532,7 +533,7 @@ zeek::detail::SetupResult zeek::detail::setup(int argc, char** argv,
 	createCurrentDoc("1.0");		// Set a global XML document
 #endif
 
-	timer_mgr = new PQ_TimerMgr();
+	zeek::timer_mgr = new zeek::detail::PQ_TimerMgr();
 
 	auto zeekygen_cfg = options.zeekygen_config_file.value_or("");
 	zeekygen_mgr = new zeekygen::Manager(zeekygen_cfg, bro_argv[0]);
@@ -656,7 +657,7 @@ zeek::detail::SetupResult zeek::detail::setup(int argc, char** argv,
 	zeek::plugin::plugin_mgr->InitPostScript();
 	zeekygen_mgr->InitPostScript();
 	broker_mgr->InitPostScript();
-	timer_mgr->InitPostScript();
+	zeek::timer_mgr->InitPostScript();
 	mgr.InitPostScript();
 
 	if ( zeek::supervisor_mgr )
@@ -870,7 +871,7 @@ zeek::detail::SetupResult zeek::detail::setup(int argc, char** argv,
 	reporter->ZeekInitDone();
 	zeek::analyzer::analyzer_mgr->DumpDebug();
 
-	have_pending_timers = ! reading_traces && timer_mgr->Size() > 0;
+	have_pending_timers = ! reading_traces && zeek::timer_mgr->Size() > 0;
 
 	return {0, std::move(options)};
 	}

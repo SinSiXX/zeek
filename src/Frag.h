@@ -53,10 +53,10 @@ protected:
 	FragTimer* expire_timer;
 };
 
-class FragTimer final : public Timer {
+class FragTimer final : public zeek::Timer {
 public:
 	FragTimer(FragReassembler* arg_f, double arg_t)
-		: Timer(arg_t, TIMER_FRAG)
+		: zeek::Timer(arg_t, zeek::TIMER_FRAG)
 			{ f = arg_f; }
 	~FragTimer() override;
 

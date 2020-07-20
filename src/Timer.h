@@ -7,6 +7,10 @@
 
 #include <stdint.h>
 
+class ODesc;
+
+namespace zeek {
+
 // If you add a timer here, adjust TimerNames in Timer.cc.
 enum TimerType : uint8_t {
 	TIMER_BACKDOOR,
@@ -42,15 +46,13 @@ enum TimerType : uint8_t {
 	TIMER_TIMERMGR_EXPIRE,
 	TIMER_THREAD_HEARTBEAT,
 };
-const int NUM_TIMER_TYPES = int(TIMER_THREAD_HEARTBEAT) + 1;
+constexpr int NUM_TIMER_TYPES = int(TIMER_THREAD_HEARTBEAT) + 1;
 
 extern const char* timer_type_to_string(TimerType type);
 
-class ODesc;
-
-class Timer : public PQ_Element {
+class Timer : public zeek::detail::PQ_Element {
 public:
-	Timer(double t, TimerType arg_type) : PQ_Element(t), type(arg_type) {}
+	Timer(double t, TimerType arg_type) : zeek::detail::PQ_Element(t), type(arg_type) {}
 	~Timer() override { }
 
 	TimerType Type() const	{ return type; }
@@ -145,6 +147,8 @@ protected:
 	static unsigned int current_timers[NUM_TIMER_TYPES];
 };
 
+namespace detail {
+
 class PQ_TimerMgr : public TimerMgr {
 public:
 	PQ_TimerMgr();
@@ -165,7 +169,51 @@ protected:
 	Timer* Remove()			{ return (Timer*) q->Remove(); }
 	Timer* Top()			{ return (Timer*) q->Top(); }
 
-	PriorityQueue* q;
+	zeek::detail::PriorityQueue* q;
 };
 
+} // namespace detail
+
 extern TimerMgr* timer_mgr;
+
+} // namespace zeek
+
+using TimerType [[deprecated("Remove in v4.1. Use zeek::TimerType.")]] = zeek::TimerType;
+using Timer [[deprecated("Remove in v4.1. Use zeek::Timer.")]] = zeek::Timer;
+using TimerMgr [[deprecated("Remove in v4.1. Use zeek::TimerMgr.")]] = zeek::TimerMgr;
+using PQ_TimerMgr [[deprecated("Remove in v4.1. Use zeek::detail::PQ_TimerMgr.")]] = zeek::detail::PQ_TimerMgr;
+extern zeek::TimerMgr*& timer_mgr [[deprecated("Remove in v4.1. Use zeek::timer_mgr.")]];
+
+constexpr auto TIMER_BACKDOOR [[deprecated("Remove in v4.1. Use zeek::TIMER_BACKDOOR.")]] = zeek::TIMER_BACKDOOR;
+constexpr auto TIMER_BREAKPOINT [[deprecated("Remove in v4.1. Use zeek::TIMER_BREAKPOINT.")]] = zeek::TIMER_BREAKPOINT;
+constexpr auto TIMER_CONN_DELETE [[deprecated("Remove in v4.1. Use zeek::TIMER_CONN_DELETE.")]] = zeek::TIMER_CONN_DELETE;
+constexpr auto TIMER_CONN_EXPIRE [[deprecated("Remove in v4.1. Use zeek::TIMER_CONN_EXPIRE.")]] = zeek::TIMER_CONN_EXPIRE;
+constexpr auto TIMER_CONN_INACTIVITY [[deprecated("Remove in v4.1. Use zeek::TIMER_CONN_INACTIVITY.")]] = zeek::TIMER_CONN_INACTIVITY;
+constexpr auto TIMER_CONN_STATUS_UPDATE [[deprecated("Remove in v4.1. Use zeek::TIMER_CONN_STATUS_UPDATE.")]] = zeek::TIMER_CONN_STATUS_UPDATE;
+constexpr auto TIMER_CONN_TUPLE_WEIRD_EXPIRE [[deprecated("Remove in v4.1. Use zeek::TIMER_CONN_TUPLE_WEIRD_EXPIRE.")]] = zeek::TIMER_CONN_TUPLE_WEIRD_EXPIRE;
+constexpr auto TIMER_DNS_EXPIRE [[deprecated("Remove in v4.1. Use zeek::TIMER_DNS_EXPIRE.")]] = zeek::TIMER_DNS_EXPIRE;
+constexpr auto TIMER_FILE_ANALYSIS_INACTIVITY [[deprecated("Remove in v4.1. Use zeek::TIMER_FILE_ANALYSIS_INACTIVITY.")]] = zeek::TIMER_FILE_ANALYSIS_INACTIVITY;
+constexpr auto TIMER_FLOW_WEIRD_EXPIRE [[deprecated("Remove in v4.1. Use zeek::TIMER_FLOW_WEIRD_EXPIRE.")]] = zeek::TIMER_FLOW_WEIRD_EXPIRE;
+constexpr auto TIMER_FRAG [[deprecated("Remove in v4.1. Use zeek::TIMER_FRAG.")]] = zeek::TIMER_FRAG;
+constexpr auto TIMER_INTERCONN [[deprecated("Remove in v4.1. Use zeek::TIMER_INTERCONN.")]] = zeek::TIMER_INTERCONN;
+constexpr auto TIMER_IP_TUNNEL_INACTIVITY [[deprecated("Remove in v4.1. Use zeek::TIMER_IP_TUNNEL_INACTIVITY.")]] = zeek::TIMER_IP_TUNNEL_INACTIVITY;
+constexpr auto TIMER_NB_EXPIRE [[deprecated("Remove in v4.1. Use zeek::TIMER_NB_EXPIRE.")]] = zeek::TIMER_NB_EXPIRE;
+constexpr auto TIMER_NET_WEIRD_EXPIRE [[deprecated("Remove in v4.1. Use zeek::TIMER_NET_WEIRD_EXPIRE.")]] = zeek::TIMER_NET_WEIRD_EXPIRE;
+constexpr auto TIMER_NETWORK [[deprecated("Remove in v4.1. Use zeek::TIMER_NETWORK.")]] = zeek::TIMER_NETWORK;
+constexpr auto TIMER_NTP_EXPIRE [[deprecated("Remove in v4.1. Use zeek::TIMER_NTP_EXPIRE.")]] = zeek::TIMER_NTP_EXPIRE;
+constexpr auto TIMER_PROFILE [[deprecated("Remove in v4.1. Use zeek::TIMER_PROFILE.")]] = zeek::TIMER_PROFILE;
+constexpr auto TIMER_ROTATE [[deprecated("Remove in v4.1. Use zeek::TIMER_ROTATE.")]] = zeek::TIMER_ROTATE;
+constexpr auto TIMER_REMOVE_CONNECTION [[deprecated("Remove in v4.1. Use zeek::TIMER_REMOVE_CONNECTION.")]] = zeek::TIMER_REMOVE_CONNECTION;
+constexpr auto TIMER_RPC_EXPIRE [[deprecated("Remove in v4.1. Use zeek::TIMER_RPC_EXPIRE.")]] = zeek::TIMER_RPC_EXPIRE;
+constexpr auto TIMER_SCHEDULE [[deprecated("Remove in v4.1. Use zeek::TIMER_SCHEDULE.")]] = zeek::TIMER_SCHEDULE;
+constexpr auto TIMER_TABLE_VAL [[deprecated("Remove in v4.1. Use zeek::TIMER_TABLE_VAL.")]] = zeek::TIMER_TABLE_VAL;
+constexpr auto TIMER_TCP_ATTEMPT [[deprecated("Remove in v4.1. Use zeek::TIMER_TCP_ATTEMPT.")]] = zeek::TIMER_TCP_ATTEMPT;
+constexpr auto TIMER_TCP_DELETE [[deprecated("Remove in v4.1. Use zeek::TIMER_TCP_DELETE.")]] = zeek::TIMER_TCP_DELETE;
+constexpr auto TIMER_TCP_EXPIRE [[deprecated("Remove in v4.1. Use zeek::TIMER_TCP_EXPIRE.")]] = zeek::TIMER_TCP_EXPIRE;
+constexpr auto TIMER_TCP_PARTIAL_CLOSE [[deprecated("Remove in v4.1. Use zeek::TIMER_TCP_PARTIAL_CLOSE.")]] = zeek::TIMER_TCP_PARTIAL_CLOSE;
+constexpr auto TIMER_TCP_RESET [[deprecated("Remove in v4.1. Use zeek::TIMER_TCP_RESET.")]] = zeek::TIMER_TCP_RESET;
+constexpr auto TIMER_TRIGGER [[deprecated("Remove in v4.1. Use zeek::TIMER_TRIGGER.")]] = zeek::TIMER_TRIGGER;
+constexpr auto TIMER_PPID_CHECK [[deprecated("Remove in v4.1. Use zeek::TIMER_PPID_CHECK.")]] = zeek::TIMER_PPID_CHECK;
+constexpr auto TIMER_TIMERMGR_EXPIRE [[deprecated("Remove in v4.1. Use zeek::TIMER_TIMERMGR_EXPIRE.")]] = zeek::TIMER_TIMERMGR_EXPIRE;
+constexpr auto TIMER_THREAD_HEARTBEAT [[deprecated("Remove in v4.1. Use zeek::TIMER_THREAD_HEARTBEAT.")]] = zeek::TIMER_THREAD_HEARTBEAT;
+constexpr auto NUM_TIMER_TYPES [[deprecated("Remove in v4.1. Use zeek::NUM_TIMER_TYPES.")]] = zeek::NUM_TIMER_TYPES;
