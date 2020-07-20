@@ -577,7 +577,7 @@ void Reporter::DoLog(const char* prefix, EventHandlerPtr event, FILE* out,
 		if ( conn )
 			conn->EnqueueEvent(event, nullptr, std::move(vl));
 		else
-			mgr.Enqueue(event, std::move(vl));
+			zeek::event_mgr.Enqueue(event, std::move(vl));
 		}
 	else
 		{
