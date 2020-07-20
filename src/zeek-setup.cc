@@ -315,20 +315,20 @@ void terminate_bro()
 	delete iosource_mgr;
 	delete event_registry;
 	delete log_mgr;
-	delete reporter;
+	delete zeek::reporter;
 	delete zeek::plugin::plugin_mgr;
 	delete zeek::val_mgr;
 
 	// free the global scope
 	zeek::detail::pop_scope();
 
-	reporter = nullptr;
+	zeek::reporter = nullptr;
 	}
 
 void zeek_terminate_loop(const char* reason)
 	{
 	set_processing_status("TERMINATING", reason);
-	reporter->Info("%s", reason);
+	zeek::reporter->Info("%s", reason);
 
 	net_get_final_stats();
 	done_with_network();
