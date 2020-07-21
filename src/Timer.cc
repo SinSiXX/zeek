@@ -79,7 +79,7 @@ TimerMgr::~TimerMgr()
 
 int TimerMgr::Advance(double arg_t, int max_expire)
 	{
-	DBG_LOG(DBG_TM, "advancing timer mgr to %.6f", arg_t);
+	DBG_LOG(zeek::DBG_TM, "advancing timer mgr to %.6f", arg_t);
 
 	t = arg_t;
 	last_timestamp = 0;
@@ -124,7 +124,7 @@ PQ_TimerMgr::~PQ_TimerMgr()
 
 void PQ_TimerMgr::Add(Timer* timer)
 	{
-	DBG_LOG(DBG_TM, "Adding timer %s (%p) at %.6f",
+	DBG_LOG(zeek::DBG_TM, "Adding timer %s (%p) at %.6f",
 	        timer_type_to_string(timer->Type()), timer, timer->Time());
 
 	// Add the timer even if it's already expired - that way, if
@@ -141,7 +141,7 @@ void PQ_TimerMgr::Expire()
 	Timer* timer;
 	while ( (timer = Remove()) )
 		{
-		DBG_LOG(DBG_TM, "Dispatching timer %s (%p)",
+		DBG_LOG(zeek::DBG_TM, "Dispatching timer %s (%p)",
 		        timer_type_to_string(timer->Type()), timer);
 		timer->Dispatch(t, true);
 		--current_timers[timer->Type()];
@@ -163,7 +163,7 @@ int PQ_TimerMgr::DoAdvance(double new_t, int max_expire)
 		// whether we should delete it too.
 		(void) Remove();
 
-		DBG_LOG(DBG_TM, "Dispatching timer %s (%p)",
+		DBG_LOG(zeek::DBG_TM, "Dispatching timer %s (%p)",
 		        timer_type_to_string(timer->Type()), timer);
 		timer->Dispatch(new_t, false);
 		delete timer;
