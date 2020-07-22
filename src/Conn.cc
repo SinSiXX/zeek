@@ -626,7 +626,7 @@ unsigned int Connection::MemoryAllocationConnVal() const
 	return conn_val ? conn_val->MemoryAllocation() : 0;
 	}
 
-void Connection::Describe(ODesc* d) const
+void Connection::Describe(zeek::ODesc* d) const
 	{
 	d->Add(start_time);
 	d->Add("(");
@@ -673,7 +673,7 @@ void Connection::Describe(ODesc* d) const
 	d->NL();
 	}
 
-void Connection::IDString(ODesc* d) const
+void Connection::IDString(zeek::ODesc* d) const
 	{
 	d->Add(orig_addr);
 	d->AddRaw(":", 1);
