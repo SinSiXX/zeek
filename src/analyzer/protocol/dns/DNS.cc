@@ -1611,7 +1611,7 @@ zeek::RecordValPtr DNS_MsgInfo::BuildDS_Val(DS_DATA* ds)
 	return r;
 	}
 
-Contents_DNS::Contents_DNS(Connection* conn, bool orig,
+Contents_DNS::Contents_DNS(zeek::Connection* conn, bool orig,
 				DNS_Interpreter* arg_interp)
 : tcp::TCP_SupportAnalyzer("CONTENTS_DNS", conn, orig)
 	{
@@ -1700,7 +1700,7 @@ void Contents_DNS::DeliverStream(int len, const u_char* data, bool orig)
 		DeliverStream(len - n, data + n, orig);
 	}
 
-DNS_Analyzer::DNS_Analyzer(Connection* conn)
+DNS_Analyzer::DNS_Analyzer(zeek::Connection* conn)
 : tcp::TCP_ApplicationAnalyzer("DNS", conn)
 	{
 	interp = new DNS_Interpreter(this);
